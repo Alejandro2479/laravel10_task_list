@@ -66,18 +66,24 @@ $tasks = [
     ),
 ];
 
-Route::get("/", function () use ($tasks) {
+Route::get("/tasks", function () use ($tasks) {
     return view('tasks.home', ['tasks' => $tasks]);
 })->name('tasks.home');
 
-Route::get('/home', function () {
+Route::get("/", function () {
     return redirect()->route('tasks.home');
 });
 
-Route::get('/{id}', function ($id) {
-    return 'One single task';
+Route::get('/tasks/{id}', function ($id) use ($tasks) {
+    $task = collect($tasks)->firstWhere('id', $id);
+
+    if (!$tasks) {
+        return abort(404);
+    }
+
+    return view('tasks.show', ['task' => $task]);
 })->name('tasks.show');
 
 Route::fallback(function () {
-    return 'Nothing here';
+    return abort(404);
 });
