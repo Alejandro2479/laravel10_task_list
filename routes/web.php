@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Http\Requests\TaskRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,44 +26,24 @@ Route::get("/", function () {
 
 Route::view('/tasks/create', 'tasks.create');
 
-Route::get('/tasks/{id}/edit', function ($id) {
-    return view('tasks.edit', ['task' => Task::findOrFail($id)]);
+Route::get('/tasks/{task}/edit', function (Task $task) {
+    return view('tasks.edit', ['task' => $task]);
 })->name('tasks.edit');
 
-Route::get('/tasks/{id}', function ($id) {
-    return view('tasks.show', ['task' => Task::findOrFail($id)]);
+Route::get('/tasks/{task}', function (Task $task) {
+    return view('tasks.show', ['task' => $task]);
 })->name('tasks.show');
 
-Route::post('/tasks', function (Request $request) {
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'required'
-    ]);
+Route::post('/tasks', function (TaskRequest $taskRequest) {
+    $task = Task::create($taskRequest->validated());
 
-    $task = new Task;
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-    $task->save();
-
-    return redirect()->route('tasks.show', ['id' => $task->id])->with('success', 'Task created successfully');
+    return redirect()->route('tasks.show', ['task' => $task->id])->with('success', 'Task created successfully');
 })->name('taks.store');
 
-Route::put('/tasks/{id}', function ($id, Request $request) {
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'required'
-    ]);
+Route::put('/tasks/{task}', function (Task $task, TaskRequest $taskRequest) {
+    $task->update($taskRequest->validated());
 
-    $task = Task::findOrFail($id);
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-    $task->save();
-
-    return redirect()->route('tasks.show', ['id' => $task->id])->with('success', 'Task updated successfully');
+    return redirect()->route('tasks.show', ['task' => $task->id])->with('success', 'Task updated successfully');
 })->name('tasks.update');
 
 Route::fallback(function () {
