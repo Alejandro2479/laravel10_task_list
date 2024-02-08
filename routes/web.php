@@ -24,7 +24,7 @@ Route::get("/", function () {
     return redirect()->route('tasks.home');
 });
 
-Route::view('/tasks/create', 'tasks.create');
+Route::view('/tasks/create', 'tasks.create')->name('tasks.create');
 
 Route::get('/tasks/{task}/edit', function (Task $task) {
     return view('tasks.edit', ['task' => $task]);
@@ -51,6 +51,12 @@ Route::delete('/tasks/{task}', function (Task $task) {
 
     return redirect()->route('tasks.home')->with('success', 'Task deleted successfully');
 })->name('tasks.destroy');
+
+Route::put('tasks/{task}/toggle-complete', function (Task $task) {
+    $task->toggleComplete();
+
+    return redirect()->back()->with('success', 'Task updated successfully');
+})->name('tasks.toggle-complete');
 
 Route::fallback(function () {
     return abort(404);
