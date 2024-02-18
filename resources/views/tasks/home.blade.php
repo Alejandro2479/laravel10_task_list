@@ -14,7 +14,7 @@
     @endforelse
 
     <nav class="mt-4">
-        <a class="font-medium text-gray-700 underline decoration-green-500" href="{{ route('tasks.create') }}">ADD TASK</a>
+        <a class="link" href="{{ route('tasks.create') }}">ADD A TASK</a>
     </nav>
 
     @if ($tasks->count())
