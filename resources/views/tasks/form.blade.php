@@ -36,9 +36,9 @@
         <div class="flex gap-2">
             <button class="btn" type="submit">
                 @isset($task)
-                    UPDATE TASK
+                    UPDATE
                 @else
-                    ADD TASK
+                    ADD
                 @endisset
             </button>
         </div>
