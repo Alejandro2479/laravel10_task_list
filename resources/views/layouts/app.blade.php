@@ -38,9 +38,8 @@
     @yield('styles')
 </head>
 <body class="container mx-auto mt-10 mb-10 max-w-lg">
-    <h1 class="text-2xl mb-4 font-medium">@yield('title')</h1>
-
     <div>
+        <h1 class="text-2xl mb-4 font-medium">@yield('title')</h1>
         @if(session()->has('success'))
             <div class="success">
                 {{ session('success') }}
