@@ -32,7 +32,7 @@
             </button>
         </form>
 
-        <form method="POST" action="{{ route('tasks.destroy', ['task' => $task->id]) }}">
+        <form method="POST" action="{{ route('tasks.delete', ['task' => $task->id]) }}">
             @csrf
             @method('DELETE')
             <button class="btn" type="submit">
@@ -42,6 +42,6 @@
     </div>
 
     <nav class="mt-4">
-        <a class="link" href="{{ route('tasks.home') }}">GO BACK</a>
+        <a class="link" href="{{ route('tasks.index') }}">GO BACK</a>
     </nav>
 @endsection
