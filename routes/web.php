@@ -18,20 +18,48 @@ use App\Http\Controllers\TaskController;
 |
 */
 
-Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+Route::get("/tasks", function () {
+    return view('tasks.index', ['tasks' => Task::latest()->paginate(10)]);
+})->name('tasks.index');
 
-Route::get("/", fn () => redirect()->route('tasks.index'));
+Route::get("/", function () {
+    return redirect()->route('tasks.index');
+});
 
-Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+Route::view('/tasks/create', 'tasks.create')->name('tasks.create');
 
-Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+Route::get('/tasks/{task}/edit', function (Task $task) {
+    return view('tasks.edit', ['task' => $task]);
+})->name('tasks.edit');
 
-Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+Route::get('/tasks/{task}', function (Task $task) {
+    return view('tasks.show', ['task' => $task]);
+})->name('tasks.show');
 
-Route::post('/tasks/', [TaskController::class, 'store'])->name('tasks.store');
+Route::post('/tasks', function (TaskRequest $taskRequest) {
+    $task = Task::create($taskRequest->validated());
 
-Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    return redirect()->route('tasks.show', ['task' => $task->id])->with('success', 'Task created successfully');
+})->name('tasks.store');
 
-Route::delete('/tasks/{task}', [TaskController::class, 'delete'])->name('tasks.delete');
+Route::put('/tasks/{task}', function (Task $task, TaskRequest $taskRequest) {
+    $task->update($taskRequest->validated());
 
-Route::fallback(fn () => abort(404));
+    return redirect()->route('tasks.show', ['task' => $task->id])->with('success', 'Task updated successfully');
+})->name('tasks.update');
+
+Route::delete('/tasks/{task}', function (Task $task) {
+    $task->delete();
+
+    return redirect()->route('tasks.index')->with('success', 'Task deleted successfully');
+})->name('tasks.delete');
+
+Route::put('tasks/{task}/toggle-complete', function (Task $task) {
+    $task->toggleComplete();
+
+    return redirect()->back()->with('success', 'Task updated successfully');
+})->name('tasks.toggle-complete');
+
+Route::fallback(function () {
+    return abort(404);
+});
