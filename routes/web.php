@@ -18,23 +18,39 @@ use App\Http\Controllers\TaskController;
 |
 */
 
+Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+
+/*
 Route::get("/tasks", function () {
     return view('tasks.index', ['tasks' => Task::latest()->paginate(10)]);
 })->name('tasks.index');
+*/
 
 Route::get("/", function () {
     return redirect()->route('tasks.index');
 });
 
-Route::view('/tasks/create', 'tasks.create')->name('tasks.create');
+Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
 
+/*
+Route::view('/tasks/create', 'tasks.create')->name('tasks.create');
+*/
+
+Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+
+/*
 Route::get('/tasks/{task}/edit', function (Task $task) {
     return view('tasks.edit', ['task' => $task]);
 })->name('tasks.edit');
+*/
 
+Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+
+/*
 Route::get('/tasks/{task}', function (Task $task) {
     return view('tasks.show', ['task' => $task]);
 })->name('tasks.show');
+*/
 
 Route::post('/tasks', function (TaskRequest $taskRequest) {
     $task = Task::create($taskRequest->validated());

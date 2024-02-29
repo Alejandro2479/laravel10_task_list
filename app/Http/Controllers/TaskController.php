@@ -28,32 +28,4 @@ class TaskController extends Controller
     {
         return view('tasks.show', ['task' => $task]);
     }
-
-    public function store(TaskRequest $taskRequest)
-    {
-        $task = Task::create($taskRequest->validated());
-
-        return redirect()->route('tasks.show', ['task' => $task->id])->with('success', 'Task created successfully');
-    }
-
-    public function update(Task $task, TaskRequest $taskRequest)
-    {
-        $task->update($taskRequest->validated());
-
-        return redirect()->route('tasks.show', ['task' => $task->id])->with('success', 'Task updated successfully');
-    }
-
-    public function delete(Task $task)
-    {
-        $task->delete();
-
-        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully');
-    }
-
-    public function toggleComplete(Task $task)
-    {
-        $task->toggleComplete();
-
-        return redirect()->back()->with('success', 'Task updated successfully');
-    }
 }
