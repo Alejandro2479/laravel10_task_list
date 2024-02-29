@@ -38,7 +38,7 @@
     @yield('styles')
 </head>
 <body class="container mx-auto mt-10 mb-10 max-w-lg">
-    <div class="border-2 border-green-500 rounded-lg shadow-xl">
+    <div class="border border-green-500 rounded-lg shadow-xl">
         <div class="m-4">
             <h1 class="text-2xl mb-4 font-medium">@yield('title')</h1>
             @if(session()->has('success'))
