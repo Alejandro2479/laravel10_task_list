@@ -44,7 +44,7 @@
         </div>
 
         <nav class="mt-4">
-            <a class="link" href="{{ route('tasks.index') }}">GO BACK</a>
+            <a class="link" href="{{ route('tasks.show', ['task' => $task->id]) }}">GO BACK</a>
         </nav>
     </form>
 @endsection

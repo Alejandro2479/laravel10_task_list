@@ -33,7 +33,7 @@ class TaskController extends Controller
     {
         $task = Task::create($taskRequest->validated());
 
-        return redirect()->route('tasks.show', ['task' => $task->id])->with('success', 'Task created successfully');
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully');
     }
 
     public function updateTask(Task $task, TaskRequest $taskRequest)

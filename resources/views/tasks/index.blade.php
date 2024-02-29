@@ -5,7 +5,7 @@
 @section('content')
     @forelse($tasks as $task)
         <div>
-            <a href='{{ route('tasks.show', ['task' => $task->id]) }}' @class(['line-through' =>  $task->completed])>
+            <a href='{{ route('tasks.show', ['task' => $task->id]) }}' @class(['text-green-500 line-through decoration-green-500' =>  $task->completed])>
                 {{ $task->title }}
             </a>
         </div>
