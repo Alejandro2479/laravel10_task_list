@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-use App\Models\Task;
-use App\Http\Requests\TaskRequest;
 use App\Http\Controllers\TaskController;
 
 /*
@@ -18,39 +16,40 @@ use App\Http\Controllers\TaskController;
 |
 */
 
-Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+Route::get('/tasks', [TaskController::class, 'indexTask'])->name('tasks.index');
+
+Route::get("/", fn () => redirect()->route('tasks.index'));
+
+Route::get('/tasks/create', [TaskController::class, 'createTask'])->name('tasks.create');
+
+Route::get('/tasks/{task}/edit', [TaskController::class, 'editTask'])->name('tasks.edit');
+
+Route::get('/tasks/{task}', [TaskController::class, 'showTask'])->name('tasks.show');
+
+Route::post('/tasks', [TaskController::class, 'storeTask'])->name('tasks.store');
+
+Route::put('/tasks/{task}', [TaskController::class, 'updateTask'])->name('tasks.update');
+
+Route::delete('/tasks/{task}', [TaskController::class, 'deleteTask'])->name('tasks.delete');
+
+Route::put('/tasks/{task}/toggle-complete', [TaskController::class, 'toogleCompleteTask'])->name('tasks.toggle-complete');
+
+Route::fallback(fn () => abort(404));
 
 /*
 Route::get("/tasks", function () {
     return view('tasks.index', ['tasks' => Task::latest()->paginate(10)]);
 })->name('tasks.index');
-*/
 
-Route::get("/", function () {
-    return redirect()->route('tasks.index');
-});
-
-Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
-
-/*
 Route::view('/tasks/create', 'tasks.create')->name('tasks.create');
-*/
 
-Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
-
-/*
 Route::get('/tasks/{task}/edit', function (Task $task) {
     return view('tasks.edit', ['task' => $task]);
 })->name('tasks.edit');
-*/
 
-Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-
-/*
 Route::get('/tasks/{task}', function (Task $task) {
     return view('tasks.show', ['task' => $task]);
 })->name('tasks.show');
-*/
 
 Route::post('/tasks', function (TaskRequest $taskRequest) {
     $task = Task::create($taskRequest->validated());
@@ -76,6 +75,4 @@ Route::put('tasks/{task}/toggle-complete', function (Task $task) {
     return redirect()->back()->with('success', 'Task updated successfully');
 })->name('tasks.toggle-complete');
 
-Route::fallback(function () {
-    return abort(404);
-});
+*/
